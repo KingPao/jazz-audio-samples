@@ -3,13 +3,16 @@ import csv
 
 
 def create_csv(data):
-    with open('treebank_csv_new.csv', 'w', newline='', encoding='UTF8') as f:
+    with open('treebank_csv_trees.csv', 'w', newline='', encoding='UTF8') as f:
         writer = csv.writer(f)
 
         writer.writerow(
             ["title", "key", "style", "tempo", "checked", "audio_produced", "chords", "marked_", "composers"])
 
         for i in range(len(data)):
+            if "trees" not in data[i]:
+                continue
+
             temp = [
                 data[i]['title'],
                 data[i]['key'],
@@ -46,11 +49,14 @@ def measures_to_chords(chords, measures, beats):
 
 
 def count_chords(data):
-    with open('chords_count.csv', 'w', newline='', encoding='UTF8') as f:
+    with open('chords_count_trees.csv', 'w', newline='', encoding='UTF8') as f:
         chord_dict = {}
         plain_chords = []
 
         for i in range(len(data)):
+            if "trees" not in data[i]:
+                continue
+
             chord_line = data[i]['chords']
 
             for chord in chord_line:
@@ -70,5 +76,5 @@ if __name__ == '__main__':
     with open("treebank.json", "r") as file:
         treebank = json.load(file)
 
-        create_csv(treebank)
+        #create_csv(treebank)
         count_chords(treebank)
