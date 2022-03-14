@@ -3,15 +3,19 @@ import csv
 
 
 def create_csv(data):
-    with open('treebank_csv_trees.csv', 'w', newline='', encoding='UTF8') as f:
+    with open('treebank_csv_trees_turnaround.csv', 'w', newline='', encoding='UTF8') as f:
         writer = csv.writer(f)
 
         writer.writerow(
-            ["title", "key", "style", "tempo", "checked", "audio_produced", "chords", "marked_", "composers"])
+            ["title", "key", "style", "tempo", "checked", "audio_produced", "chords", "marked_", "turnaround", "composers"])
 
         for i in range(len(data)):
             if "trees" not in data[i]:
                 continue
+
+            turnaround = "NT"
+            if "turnaround" in data[i]:
+                turnaround = data[i]['turnaround']
 
             temp = [
                 data[i]['title'],
@@ -22,6 +26,7 @@ def create_csv(data):
                 "",
                 ", ".join(data[i]['chords']),
                 measures_to_chords(data[i]['chords'], data[i]['measures'], data[i]['beats']),
+                turnaround,
                 data[i]['composers']
             ]
 
@@ -76,5 +81,5 @@ if __name__ == '__main__':
     with open("treebank.json", "r") as file:
         treebank = json.load(file)
 
-        #create_csv(treebank)
-        count_chords(treebank)
+        create_csv(treebank)
+        #count_chords(treebank)
